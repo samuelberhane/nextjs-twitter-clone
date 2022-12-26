@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { Sidebar, Modal, Widgets, Feeds } from "../components";
 
 export default function Home() {
   return (
@@ -9,7 +10,16 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>Hello World</h1>
+      <main className="flex min-h-screen py-3 mx-auto max-w-8xl md:px-6">
+        {/* Sidebar */}
+        <Sidebar />
+
+        {/* Feeds */}
+        <Feeds />
+
+        {/* Widgets */}
+        <Widgets />
+      </main>
     </>
   );
 }
