@@ -8,3 +8,8 @@
 .scaleChange:hover {
   transform: scale(1.13);
 }
+.postImage {
+  width: 100% !important;
+  height: 320px !important;
+  object-fit: cover;
+}

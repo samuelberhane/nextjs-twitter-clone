@@ -10,7 +10,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen py-3 mx-auto max-w-8xl md:px-6">
+      <main className="flex min-h-screen py-3 mx-auto max-w-8xl md:px-2">
         {/* Sidebar */}
         <Sidebar />
 
