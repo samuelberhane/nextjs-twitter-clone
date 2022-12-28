@@ -7,6 +7,7 @@ const nextConfig = {
       "cdn.cnn.com",
       "media.cnn.com",
       "randomuser.me",
+      "www.datafeedwatch.com",
     ],
   },
 };
