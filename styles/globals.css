@@ -2,36 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-.hoverChange:hover {
-  background-color: rgb(210, 241, 239);
-}
-.scaleChange:hover {
-  transform: scale(1.13);
-}
-.postImage {
-  width: 100% !important;
-  height: 320px !important;
-  object-fit: cover;
+@layer components {
+  .hoverChange:hover {
+    @apply bg-[#d8f5dc];
+  }
+  .scaleChange:hover {
+    @apply scale-110;
+  }
+  .postImage {
+    width: 100% !important;
+    height: 320px !important;
+    object-fit: cover;
+  }
+
+  .newsImage {
+    width: 90px !important;
+    height: 80px !important;
+  }
+
+  .userPost {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .authInput {
+    @apply block w-full px-2 py-1 outline-none sm:w-[350px] md:w-[450px] border-2 shadow  mt-5;
+  }
 }
 
-.newsImage {
-  width: 90px !important;
-  height: 80px !important;
-}
+@layer base {
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
 
-.userPost {
-  width: 40px !important;
-  height: 40px !important;
-}
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(68, 65, 65);
+  }
 
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgb(68, 65, 65);
-}
-
-::-webkit-scrollbar-track {
-  background-color: rgb(238, 229, 182);
+  ::-webkit-scrollbar-track {
+    background-color: rgb(238, 229, 182);
+  }
 }

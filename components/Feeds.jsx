@@ -10,7 +10,7 @@ const Feeds = () => {
       </div>
 
       {/* Top bar */}
-      <div className="lg:flex items-center justify-between py-2 px-4 border-b-2 hidden ">
+      <div className="flex items-center justify-between py-2 px-4 border-b-2">
         <h1 className="font-bold text-2xl">Home</h1>
         <GiDrippingStar className="text-xl text-blue-600" />
       </div>

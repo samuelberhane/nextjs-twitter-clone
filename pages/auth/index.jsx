@@ -1,9 +1,8 @@
-import { getProviders, signIn } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { BsGoogle } from "react-icons/bs";
 
-const Signin = ({ providers }) => {
-  console.log(providers);
+const Auth = () => {
   return (
     <div className="flex flex-col h-screen lg:flex-row items-center w-full">
       {/* twitter logo */}
@@ -31,20 +30,27 @@ const Signin = ({ providers }) => {
           <h1 className="font-bold md:text-6xl text-3xl mt-4 md:mt-8 lg:mt-16 mb-5 md:mb-8 lg:mb-10">
             Happening now
           </h1>
-          <div
-            className="flex flex-col w-full  md:w-[60%]"
-            onClick={() => signIn(providers.google.id, { callbackUrl: "/" })}
-          >
-            <div className="flex border-2 rounded-2xl px-4 py-2 items-center gap-2 justify-center cursor-pointer font-bold text-lg bg-gray-200 hover:bg-orange-400">
+          <div className="flex flex-col w-full  md:w-[60%]">
+            {/* Auth user using google */}
+            <div className="flex border-2 rounded-2xl px-4 py-2 items-center gap-2 justify-center cursor-pointer font-bold text-lg bg-gray-200 hover:shadow-md">
               <BsGoogle /> Continue with Google
             </div>
 
-            <button className="border-2 rounded-2xl px-4 py-2 my-4 bg-blue-500 text-white font-bold text-lg hover:bg-orange-400">
+            {/* Navigate to signup page */}
+            <Link
+              href="/auth/signup"
+              className="border-2 rounded-2xl px-4 py-2 my-4 bg-blue-500 text-white font-bold text-lg hover:shadow-md flex items-center justify-center"
+            >
               Sign up
-            </button>
-            <button className="border-2 rounded-2xl px-4 py-2 font-bold text-lg bg-gray-200 hover:bg-orange-400">
+            </Link>
+
+            {/* Navigate to login page */}
+            <Link
+              href="/auth/login"
+              className="border-2 rounded-2xl px-4 py-2 font-bold text-lg bg-gray-200 hover:shadow-md flex items-center justify-center"
+            >
               Login
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -52,13 +58,4 @@ const Signin = ({ providers }) => {
   );
 };
 
-export async function getServerSideProps() {
-  const providers = await getProviders();
-  return {
-    props: {
-      providers,
-    },
-  };
-}
-
-export default Signin;
+export default Auth;
