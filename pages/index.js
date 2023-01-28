@@ -1,6 +1,9 @@
 import Head from "next/head";
 import { Sidebar, Modal, Widgets, Feeds } from "../components";
-import { auth } from "../firebase/firebaseConfig";
+
+import { Loader } from "../components";
+import { useRouter } from "next/router";
+import useAuthStatus from "../hooks/useAuthState";
 
 export async function getServerSideProps() {
   const trendingNews = await fetch(
@@ -19,7 +22,18 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ trendingNews, whoToFollow }) {
-  console.log("auth", auth.currentUser);
+  const { userLogin, loading } = useAuthStatus();
+  const router = useRouter();
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (!userLogin) {
+    router.push("/auth");
+    return <Loader />;
+  }
+
   return (
     <>
       <Head>
