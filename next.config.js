@@ -8,6 +8,7 @@ const nextConfig = {
       "media.cnn.com",
       "randomuser.me",
       "www.datafeedwatch.com",
+      "lh3.googleusercontent.com",
     ],
   },
 };

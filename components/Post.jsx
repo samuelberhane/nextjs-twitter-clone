@@ -11,14 +11,11 @@ const Post = ({ image }) => {
   return (
     <div className="flex gap-6 p-4 border-b-2">
       {/* User Profile */}
-
-      <Image
+      <img
         src="https://images.pexels.com/photos/14807470/pexels-photo-14807470.jpeg?auto=compress&cs=tinysrgb&w=1600"
         alt="user"
-        width="70"
-        height="70"
-        className="rounded-full userPost"
-      ></Image>
+        className="rounded-full w-10 h-10"
+      />
 
       <div>
         <div className="flex justify-between items-center mb-1">

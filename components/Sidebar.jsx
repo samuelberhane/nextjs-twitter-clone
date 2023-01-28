@@ -2,6 +2,7 @@ import Image from "next/dist/client/image";
 import { menuContents } from "../icons";
 import MenuItem from "./MenuItem";
 import { IoIosMore } from "react-icons/io";
+import { auth } from "../firebase/firebaseConfig";
 
 const Sidebar = () => {
   return (
@@ -27,15 +28,19 @@ const Sidebar = () => {
       {/* Mini User Profile */}
       <div className="items-center hidden gap-3 p-1 border-2 lg:flex rounded-2xl hoverChange">
         <Image
-          src="https://images.pexels.com/photos/14807470/pexels-photo-14807470.jpeg?auto=compress&cs=tinysrgb&w=1600"
+          src={auth?.currentUser?.photoURL || "/img/user.jpg"}
           alt="user"
           width="45"
           height="45"
           className="rounded-full"
         ></Image>
         <div className="w-[60%]">
-          <p className="font-bold">Margarete Perrin</p>
-          <p>@samuelBrhane</p>
+          <p className="font-bold">{auth?.currentUser?.displayName}</p>
+          <p>
+            {auth?.currentUser?.email.length > 15
+              ? auth?.currentUser?.email.slice(0, 12) + "..."
+              : auth?.currentUser?.email}
+          </p>
         </div>
         <IoIosMore className="text-2xl" />
       </div>

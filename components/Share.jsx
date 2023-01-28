@@ -1,14 +1,78 @@
 import Image from "next/legacy/image";
 import { MdPermMedia } from "react-icons/md";
 import { BsFillEmojiExpressionlessFill } from "react-icons/bs";
+import { auth, db } from "../firebase/firebaseConfig";
+import { addDoc, collection } from "firebase/firestore";
+import { useState } from "react";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 
 const Share = () => {
+  const [text, setText] = useState("");
+  const [postImg, setPostImg] = useState(null);
+
+  // handle tweet
+  const handleTweet = async (e) => {
+    e.preventDefault();
+    // Upload images to firebase storage
+    const storeImg = () => {
+      return new Promise((resolve, reject) => {
+        const storage = getStorage();
+        const storageRef = ref(storage, postImg.name);
+        const uploadTask = uploadBytesResumable(storageRef, postImg);
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {},
+          (error) => {
+            // Handle unsuccessful uploads
+            reject(error);
+          },
+          () => {
+            // Handle successful uploads on complete
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              resolve(downloadURL);
+            });
+          }
+        );
+      });
+    };
+
+    let postData = {
+      creator: auth?.currentUser?.uid,
+      userImg: auth?.currentUser?.photoURL,
+      username: auth?.currentUser?.displayName,
+      userEmail: auth?.currentUser?.email,
+      timestamp: new Date().getTime(),
+      text,
+    };
+
+    if (postImg) {
+      storeImg()
+        .then(async (imgUrl) => {
+          postData.imgUrl = imgUrl;
+          const docRef = await addDoc(collection(db, "posts"), postData);
+        })
+        .catch((error) => {
+          alert("Image not uploaded");
+        });
+    } else {
+      const docRef = await addDoc(collection(db, "posts"), postData);
+    }
+    setPostImg(null);
+    setText("");
+  };
+
   return (
     <div className="flex gap-3 p-3 shadow-md border-b-4">
       {/* User Profile */}
       <div>
         <Image
-          src="https://images.pexels.com/photos/14807470/pexels-photo-14807470.jpeg?auto=compress&cs=tinysrgb&w=1600"
+          src={auth?.currentUser?.photoURL || "/img/user.jpg"}
           alt="user"
           width="50"
           height="50"
@@ -17,22 +81,36 @@ const Share = () => {
       </div>
 
       {/* Tweet Input */}
-      <div className="w-full">
+      <form className="w-full" onSubmit={handleTweet}>
         <input
           type="text"
           placeholder="What's happening?"
           className="py-3 px-2 w-full outline-none"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
         />
         <div className="flex justify-between px-3 items-center">
           <div className="flex gap-4 text-lg text-blue-500">
-            <MdPermMedia />
-            <BsFillEmojiExpressionlessFill />
+            <label htmlFor="imageFile">
+              <MdPermMedia className="hover:shadow-lg cursor-pointer hover:scale-110" />
+            </label>
+            <input
+              type="file"
+              id="imageFile"
+              className="hidden"
+              accept=".jpg,.png,.jpeg"
+              onChange={(e) => setPostImg(e.target.files[0])}
+            />
+            <BsFillEmojiExpressionlessFill className="hover:shadow-lg cursor-pointer hover:scale-110" />
           </div>
-          <button className="font-bold bg-blue-500 rounded-2xl px-5 py-2 text-white">
+          <button
+            className="font-bold bg-blue-500 rounded-2xl px-5 py-2 text-white"
+            type="submit"
+          >
             Tweet
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

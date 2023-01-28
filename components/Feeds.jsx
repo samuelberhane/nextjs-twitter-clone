@@ -1,4 +1,3 @@
-import { GiDrippingStar } from "react-icons/gi";
 import { Share, Post, SearchBar } from "./";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
@@ -29,7 +28,6 @@ const Feeds = () => {
           className="flex items-center gap-2 cursor-pointer"
         >
           <p>Logout</p>
-          <GiDrippingStar className="text-xl text-blue-600 cursor-pointer" />
         </div>
       </div>
 

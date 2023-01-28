@@ -96,6 +96,11 @@ const Login = () => {
                 Sign up
               </Link>
             </p>
+            <div className="mt-4 w-[120px] text-center rounded text-white flex items-center justify-center">
+              <Link href="/auth" className="bg-blue-500 w-full py-2 rounded">
+                Go Back
+              </Link>
+            </div>
           </form>
         </div>
       </div>

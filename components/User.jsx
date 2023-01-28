@@ -4,7 +4,7 @@ import Image from "next/legacy/image";
 const User = ({ user }) => {
   const { name, login, picture } = user;
   return (
-    <div className="flex justify-between items-center xl:w-[70%] lg:w-[90%] w-full mb-3 mt-2 hover:bg-gray-200 rounded-md">
+    <div className="justify-between flex items-center w-full mb-3 mt-2 hover:bg-gray-200 rounded-md">
       <Image
         src={picture.medium}
         alt="user"
@@ -13,7 +13,7 @@ const User = ({ user }) => {
         className="rounded-full"
       />
       <div className="w-[60%] ml-3">
-        <p className="font-bold">
+        <p className="font-bold text-sm whitespace-nowrap">
           {name.first} {name.last}
         </p>
         <p>{login.username}</p>

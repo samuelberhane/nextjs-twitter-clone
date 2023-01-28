@@ -16,11 +16,12 @@ const Widgets = ({ trendingNews, whoToFollow }) => {
       <Trends trendingNews={trendingNews} />
 
       {/* People to follow */}
-      <div className="my-3 border-t-4">
+      <div className="my-5 pt-2 border-t-4">
         <h1 className="font-bold text-xl">Who to follow</h1>
         {whoToFollow?.slice(0, users)?.map((user, index) => (
           <User key={index} user={user} />
         ))}
+
         <button
           className="rounded-xl px-4 py-2 bg-blue-200  font-bold"
           onClick={handleUsers}

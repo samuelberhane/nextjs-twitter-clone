@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { Sidebar, Modal, Widgets, Feeds } from "../components";
-
 import { Loader } from "../components";
 import { useRouter } from "next/router";
 import useAuthStatus from "../hooks/useAuthState";

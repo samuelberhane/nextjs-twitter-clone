@@ -12,21 +12,16 @@ const News = ({ news }) => {
 
   const { title, url, urlToImage } = news;
   return (
-    <div className="mb-4 border-b-1 hover:bg-gray-200">
+    <div className="mb-4 hover:bg-gray-200 border-b-2 pb-1">
       <a
         href={url}
         target="_blank"
         rel="noreferrer"
-        className="flex border-2 items-center gap-3 justify-between"
+        className="flex items-start gap-3 justify-between"
       >
         {title}
-        <Image
-          src={urlToImage}
-          alt="news-img"
-          width="80"
-          height="90"
-          className="newsImage rounded-md"
-        ></Image>
+
+        <img src={urlToImage} alt="news-img" className="rounded-md newsImage" />
       </a>
       <div className="flex justify-between">
         <p className="text-gray-600 text-xs">{tweets}k Tweets</p>
