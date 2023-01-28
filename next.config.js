@@ -9,6 +9,7 @@ const nextConfig = {
       "randomuser.me",
       "www.datafeedwatch.com",
       "lh3.googleusercontent.com",
+      "firebasestorage.googleapis.com",
     ],
   },
 };

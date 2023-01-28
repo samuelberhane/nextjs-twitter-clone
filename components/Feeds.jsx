@@ -3,7 +3,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useRouter } from "next/router";
 
-const Feeds = () => {
+const Feeds = ({ posts }) => {
   const router = useRouter();
 
   // handle user signout
@@ -35,10 +35,9 @@ const Feeds = () => {
       <Share />
 
       {/* posts */}
-      <Post image={false} />
-      <Post image={true} />
-      <Post image={true} />
-      <Post image={false} />
+      {posts.map((post, index) => (
+        <Post image={post.data.imgUrl ? true : false} key={index} post={post} />
+      ))}
     </div>
   );
 };

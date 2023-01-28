@@ -1,5 +1,6 @@
 import Image from "next/legacy/image";
 import { BsChevronDown } from "react-icons/bs";
+import { formatDistanceToNow } from "date-fns";
 import {
   AiOutlineComment,
   AiOutlineRetweet,
@@ -7,37 +8,32 @@ import {
   AiOutlineUpload,
 } from "react-icons/ai";
 
-const Post = ({ image }) => {
+const Post = ({ image, post }) => {
+  const {
+    data: { imgUrl, timestamp, text, userEmail, username, userImg },
+    id,
+  } = post;
   return (
     <div className="flex gap-6 p-4 border-b-2">
       {/* User Profile */}
-      <img
-        src="https://images.pexels.com/photos/14807470/pexels-photo-14807470.jpeg?auto=compress&cs=tinysrgb&w=1600"
-        alt="user"
-        className="rounded-full w-10 h-10"
-      />
+      <img src={userImg} alt="user" className="rounded-full w-10 h-10" />
 
       <div>
         <div className="flex justify-between items-center mb-1">
           <h3 className="font-bold">
-            Samuel
-            <span className="font-100 text-gray-600">@samuelBrhane - 3m</span>
+            {username}{" "}
+            <span className="font-100 text-gray-600">
+              - {formatDistanceToNow(new Date(timestamp))}
+            </span>
           </h3>
           <BsChevronDown />
         </div>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil,
-          aliquid. Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          Nihil, aliquid.{" "}
-          <span className="text-blue-500">#Lorem, ipsum dolor.</span>
-        </p>
+        <p>{text.length > 150 ? text.slice(0, 150) + "..." : text}</p>
         {image && (
-          <Image
-            src="https://images.pexels.com/photos/14807470/pexels-photo-14807470.jpeg?auto=compress&cs=tinysrgb&w=1600"
+          <img
+            src={imgUrl}
             alt="post"
-            width="100"
-            height="100"
-            className="postImage rounded-md mt-2"
+            className="w-full h-[280px] rounded-md mt-2"
           />
         )}
 
