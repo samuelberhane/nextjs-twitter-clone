@@ -30,6 +30,9 @@
   .socialImg {
     height: calc(100vh - 220px);
   }
+  .hoverEffect {
+    @apply cursor-pointer hover:bg-gray-200 rounded-full  p-[0.1rem] transition duration-500 ease-out;
+  }
 }
 
 @layer base {
