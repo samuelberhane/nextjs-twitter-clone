@@ -9,6 +9,7 @@ import Trends from "./Trends";
 import News from "./News";
 import SearchBar from "./SearchBar";
 import User from "./User";
+import Loader from "./Loader";
 
 export {
   Sidebar,
@@ -22,4 +23,5 @@ export {
   News,
   SearchBar,
   User,
+  Loader,
 };

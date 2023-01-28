@@ -5,18 +5,21 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import { useRouter } from "next/router";
+import { Loader } from "../../components";
+import useAuthStatus from "../../hooks/useAuthState";
 
 const Signup = () => {
   const router = useRouter();
+  const { userLogin, loading } = useAuthStatus();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loader, setLoader] = useState(false);
   const [error, setError] = useState(null);
 
   // handle user sign up
   const handleSubmit = (e) => {
-    setLoading(true);
+    setLoader(true);
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -26,21 +29,26 @@ const Signup = () => {
         });
         const user = userCredential.user;
         router.push("/");
-        setLoading(false);
+        setLoader(false);
       })
       .catch((error) => {
         setError(error.message);
-        setLoading(false);
+        setLoader(false);
       });
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (userLogin) {
+    router.push("/");
+    return <Loader />;
+  }
+
   return (
     <div className="px-6 md:px-10 lg:px-16">
-      {loading && (
-        <div className="fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,0.6)] z-20 flex items-center justify-center">
-          <img src="/img/loader.gif" alt="loader" />
-        </div>
-      )}
+      {loader && <Loader />}
       <div className="flex justify-end bg-gradient-to-r from-green-500 to-black via-green-400 py-1 md:py-2">
         <div className="flex items-center justify-center">
           <Image

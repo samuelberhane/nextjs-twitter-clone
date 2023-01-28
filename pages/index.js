@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { Sidebar, Modal, Widgets, Feeds } from "../components";
+import { auth } from "../firebase/firebaseConfig";
 
 export async function getServerSideProps() {
   const trendingNews = await fetch(
@@ -18,6 +19,7 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ trendingNews, whoToFollow }) {
+  console.log("auth", auth.currentUser);
   return (
     <>
       <Head>

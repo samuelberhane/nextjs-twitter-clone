@@ -4,21 +4,34 @@ import { BsGoogle } from "react-icons/bs";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import { useRouter } from "next/router";
+import useAuthStatus from "../../hooks/useAuthState";
+import { Loader } from "../../components";
 
 const Auth = () => {
   const router = useRouter();
+  const { userLogin, loading } = useAuthStatus();
 
   // handle google login
   const googleLogin = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
+        const user = result.user;
         router.push("/");
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (userLogin) {
+    router.push("/");
+    return <Loader />;
+  }
 
   return (
     <div className="flex flex-col h-screen lg:flex-row items-center w-full">
