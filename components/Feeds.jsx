@@ -1,7 +1,19 @@
 import { GiDrippingStar } from "react-icons/gi";
 import { Share, Post, SearchBar } from "./";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebaseConfig";
+import { useRouter } from "next/router";
 
 const Feeds = () => {
+  const router = useRouter();
+
+  // handle user signout
+  const handleSignout = () => {
+    signOut(auth).then(() => {
+      router.push("/auth");
+    });
+  };
+
   return (
     <div className="ml-0  sm:ml-16 lg:ml-64 shadow-md w-full lg:w-1/2 ">
       {/* Search bar */}
@@ -12,7 +24,13 @@ const Feeds = () => {
       {/* Top bar */}
       <div className="flex items-center justify-between py-2 px-4 border-b-2">
         <h1 className="font-bold text-2xl">Home</h1>
-        <GiDrippingStar className="text-xl text-blue-600" />
+        <div
+          onClick={handleSignout}
+          className="flex items-center gap-2 cursor-pointer"
+        >
+          <p>Logout</p>
+          <GiDrippingStar className="text-xl text-blue-600 cursor-pointer" />
+        </div>
       </div>
 
       {/* tweet component */}

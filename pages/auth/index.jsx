@@ -1,8 +1,25 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import { BsGoogle } from "react-icons/bs";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "../../firebase/firebaseConfig";
+import { useRouter } from "next/router";
 
 const Auth = () => {
+  const router = useRouter();
+
+  // handle google login
+  const googleLogin = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        router.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="flex flex-col h-screen lg:flex-row items-center w-full">
       {/* twitter logo */}
@@ -32,7 +49,10 @@ const Auth = () => {
           </h1>
           <div className="flex flex-col w-full  md:w-[60%]">
             {/* Auth user using google */}
-            <div className="flex border-2 rounded-2xl px-4 py-2 items-center gap-2 justify-center cursor-pointer font-bold text-lg bg-gray-200 hover:shadow-md">
+            <div
+              className="flex border-2 rounded-2xl px-4 py-2 items-center gap-2 justify-center cursor-pointer font-bold text-lg bg-gray-200 hover:shadow-md"
+              onClick={googleLogin}
+            >
               <BsGoogle /> Continue with Google
             </div>
 

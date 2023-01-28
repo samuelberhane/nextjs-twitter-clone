@@ -1,6 +1,7 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import React, { useState } from "react";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 const Signup = () => {
   const [fullName, setFullName] = useState("");
@@ -59,9 +60,10 @@ const Signup = () => {
           </p>
           <button
             type="submit"
-            className="sm:w-[350px] md:w-[450px] w-full bg-blue-500 text-white py-2 rounded"
+            className="sm:w-[350px] md:w-[450px] w-full bg-blue-500 text-white py-2 rounded relative"
           >
-            Sign up
+            <p>Sign up</p>
+            <AiOutlineArrowRight className="absolute right-2 top-3" />
           </button>
           <p className="sm:w-[350px] md:w-[450px] w-full font-light text-sm mt-3">
             By signing up, you agree to the{" "}

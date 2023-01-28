@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { MdPermMedia } from "react-icons/md";
 import { BsFillEmojiExpressionlessFill } from "react-icons/bs";
 
