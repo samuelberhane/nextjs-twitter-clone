@@ -4,6 +4,7 @@ import { auth, db } from "../firebase/firebaseConfig";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Feeds = () => {
   const router = useRouter();
@@ -47,9 +48,19 @@ const Feeds = () => {
       <Share />
 
       {/* posts */}
-      {posts?.map((post, index) => (
-        <Post image={post.data.imgUrl ? true : false} key={index} post={post} />
-      ))}
+      <AnimatePresence>
+        {posts?.map((post, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Post key={index} post={post} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 };

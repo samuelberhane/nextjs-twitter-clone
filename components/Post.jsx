@@ -56,8 +56,6 @@ const Post = ({ post }) => {
   const handleDelete = async () => {
     await deleteDoc(doc(db, "posts", post.id));
     if (post.data().imgUrl) {
-      console.log("post.data().uuid", post.data().uuid);
-      console.log("post.data().imgUrl", post.data().imgUrl);
       deleteObject(ref(storage, `posts/${post.data().uuid}/image`));
     }
   };

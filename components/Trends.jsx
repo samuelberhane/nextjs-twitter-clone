@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { BsNewspaper } from "react-icons/bs";
 import { News } from "./";
@@ -15,9 +16,19 @@ const Trends = ({ trendingNews }) => {
         <BsNewspaper className="text-blue-600 text-xl" />
       </div>
       <div className="mt-2">
-        {trendingNews?.slice(0, newsNumber)?.map((news, index) => (
-          <News key={index} news={news} />
-        ))}
+        <AnimatePresence>
+          {trendingNews?.slice(0, newsNumber)?.map((news, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <News key={index} news={news} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
 
       <button
