@@ -3,8 +3,6 @@ import { Sidebar, Modal, Widgets, Feeds } from "../components";
 import { Loader } from "../components";
 import { useRouter } from "next/router";
 import useAuthStatus from "../hooks/useAuthState";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
 
 export async function getServerSideProps() {
   const trendingNews = await fetch(
@@ -15,27 +13,15 @@ export async function getServerSideProps() {
     (res) => res.json()
   );
 
-  // fetch posts
-  const docRef = collection(db, "posts");
-  const q = query(docRef, orderBy("timestamp", "desc"));
-  const docSnap = await getDocs(q);
-  let posts = [];
-  docSnap.forEach((doc) => {
-    return posts.push({
-      id: doc.id,
-      data: doc.data(),
-    });
-  });
   return {
     props: {
       trendingNews,
       whoToFollow,
-      posts,
     },
   };
 }
 
-export default function Home({ trendingNews, whoToFollow, posts }) {
+export default function Home({ trendingNews, whoToFollow }) {
   const { userLogin, loading } = useAuthStatus();
   const router = useRouter();
 
@@ -61,7 +47,7 @@ export default function Home({ trendingNews, whoToFollow, posts }) {
         <Sidebar />
 
         {/* Feeds */}
-        <Feeds posts={posts} />
+        <Feeds />
 
         {/* Widgets */}
         <Widgets

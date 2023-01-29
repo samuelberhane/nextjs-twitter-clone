@@ -1,10 +1,22 @@
 import { Share, Post, SearchBar } from "./";
 import { signOut } from "firebase/auth";
-import { auth } from "../firebase/firebaseConfig";
+import { auth, db } from "../firebase/firebaseConfig";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
-const Feeds = ({ posts }) => {
+const Feeds = () => {
   const router = useRouter();
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    return onSnapshot(
+      query(collection(db, "posts")),
+      orderBy("timestamp", "desc"),
+      (snapshot) => setPosts(snapshot.docs)
+    );
+  }, []);
+  console.log("posts", posts);
 
   // handle user signout
   const handleSignout = () => {
@@ -35,7 +47,7 @@ const Feeds = ({ posts }) => {
       <Share />
 
       {/* posts */}
-      {posts.map((post, index) => (
+      {posts?.map((post, index) => (
         <Post image={post.data.imgUrl ? true : false} key={index} post={post} />
       ))}
     </div>

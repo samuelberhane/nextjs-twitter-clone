@@ -2,7 +2,7 @@ import Image from "next/legacy/image";
 import { MdPermMedia } from "react-icons/md";
 import { BsFillEmojiExpressionlessFill } from "react-icons/bs";
 import { auth, db } from "../firebase/firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
 import {
   getStorage,
@@ -11,19 +11,22 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import Loader from "./Loader";
 
 const Share = () => {
   const [text, setText] = useState("");
   const [postImg, setPostImg] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // handle tweet
   const handleTweet = async (e) => {
     e.preventDefault();
+    const uuid = uuidv4();
     // Upload images to firebase storage
     const storeImg = () => {
       return new Promise((resolve, reject) => {
         const storage = getStorage();
-        const storageRef = ref(storage, postImg.name);
+        const storageRef = ref(storage, `posts/${uuid}/image`);
         const uploadTask = uploadBytesResumable(storageRef, postImg);
         uploadTask.on(
           "state_changed",
@@ -48,17 +51,22 @@ const Share = () => {
       username: auth?.currentUser?.displayName,
       userEmail: auth?.currentUser?.email,
       timestamp: new Date().getTime(),
+      uuid,
       text,
     };
 
     if (postImg) {
+      setLoading(true);
       storeImg()
         .then(async (imgUrl) => {
           postData.imgUrl = imgUrl;
           const docRef = await addDoc(collection(db, "posts"), postData);
+          setLoading(false);
         })
+
         .catch((error) => {
           alert("Image not uploaded");
+          setLoading(false);
         });
     } else {
       const docRef = await addDoc(collection(db, "posts"), postData);
@@ -69,6 +77,9 @@ const Share = () => {
 
   return (
     <div className="flex gap-3 p-3 shadow-md border-b-4">
+      {/* loading effect */}
+      {loading && <Loader />}
+
       {/* User Profile */}
       <div>
         <Image
