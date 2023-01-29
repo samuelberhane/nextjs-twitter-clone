@@ -1,11 +1,13 @@
 import { useGlobalContext } from "../contexts/postContext";
 import { FaTimes } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
 import { BsFillEmojiExpressionlessFill } from "react-icons/bs";
+import { useRouter } from "next/router";
 
 const Modal = () => {
+  const router = useRouter();
   const { dispatch, postId } = useGlobalContext();
   const [post, setPost] = useState(null);
   const [commentText, setCommentText] = useState("");
@@ -14,9 +16,21 @@ const Modal = () => {
     onSnapshot(doc(db, "posts", postId), (snapshot) => setPost(snapshot));
   }, [postId]);
 
-  const handleComment = (e) => {
+  const handleComment = async (e) => {
     e.preventDefault();
+    await addDoc(collection(db, "posts", postId, "comment"), {
+      commentText,
+      userId: auth?.currentUser?.uid,
+      username: auth?.currentUser?.displayName,
+      userImg: auth?.currentUser?.photoURL,
+      userEmail: auth?.currentUser?.email,
+      timestamp: new Date().getTime(),
+    });
+    dispatch({ type: "CLOSE_MODAL" });
+    setCommentText("");
+    router.push(`post/${postId}`);
   };
+
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 flex justify-center bg-[rgba(12,23,12,0.5)] z-50 px-1">
       <div className="mt-20 border-2 h-[290px] bg-white w-full sm:w-[500px] rounded-md shadow relative py-9">
@@ -27,7 +41,7 @@ const Modal = () => {
         <div className="border-t-2 py-4 px-2">
           <div className="flex gap-2">
             <img
-              src={post?.data().userImg}
+              src={post?.data().userImg || "/img/user.jpg"}
               alt="user"
               className="rounded-full w-10 h-10"
             />

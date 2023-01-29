@@ -22,14 +22,18 @@ import { useGlobalContext } from "../contexts/postContext";
 
 const Post = ({ post }) => {
   const [likes, setLikes] = useState([]);
+  const [comments, setComments] = useState([]);
   const [userLiked, setUserLiked] = useState(false);
   const { dispatch } = useGlobalContext();
 
   // Get post likes
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "posts", post.id, "likes"),
-      (snapshot) => setLikes(snapshot.docs)
+    onSnapshot(collection(db, "posts", post.id, "likes"), (snapshot) =>
+      setLikes(snapshot.docs)
+    );
+
+    onSnapshot(collection(db, "posts", post.id, "comment"), (snapshot) =>
+      setComments(snapshot.docs)
     );
   }, []);
 
@@ -66,7 +70,7 @@ const Post = ({ post }) => {
     <div className="flex gap-6 p-4 border-b-2">
       {/* User Profile */}
       <img
-        src={post.data().userImg}
+        src={post.data().userImg || "/img/user.jpg"}
         alt="user"
         className="rounded-full w-10 h-10"
       />
@@ -79,7 +83,11 @@ const Post = ({ post }) => {
               - {formatDistanceToNow(new Date(post.data().timestamp))}
             </span>
           </h3>
-          <BsChevronDown />
+          {auth?.currentUser?.uid === post.data().creator && (
+            <div className="controller" onClick={handleDelete}>
+              <RiDeleteBin6Line className="hoverEffect" />
+            </div>
+          )}
         </div>
         <p className="text-[14px] md:text-[16px]">
           {post.data().text.length > 120
@@ -99,8 +107,8 @@ const Post = ({ post }) => {
             <AiOutlineComment
               className="hoverEffect"
               onClick={() => dispatch({ type: "OPEN_MODAL", payload: post.id })}
-            />{" "}
-            1
+            />
+            {comments?.length}
           </div>
           <div className="controller">
             <AiOutlineRetweet className="hoverEffect" />
@@ -112,16 +120,11 @@ const Post = ({ post }) => {
               } hoverEffect`}
               onClick={handleLike}
             />
-            {likes.length}
+            {likes?.length}
           </div>
           <div className="controller">
             <AiOutlineUpload className="hoverEffect" />
           </div>
-          {auth?.currentUser?.uid === post.data().creator && (
-            <div className="controller" onClick={handleDelete}>
-              <RiDeleteBin6Line className="hoverEffect" />
-            </div>
-          )}
         </div>
       </div>
     </div>

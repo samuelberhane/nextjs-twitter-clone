@@ -21,7 +21,6 @@ const reducer = (state, action) => {
 
 const PostContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log("state", state);
   return (
     <postContext.Provider value={{ ...state, dispatch }}>
       {children}

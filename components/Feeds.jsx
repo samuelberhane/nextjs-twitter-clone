@@ -17,7 +17,6 @@ const Feeds = () => {
       (snapshot) => setPosts(snapshot.docs)
     );
   }, []);
-  console.log("posts", posts);
 
   // handle user signout
   const handleSignout = () => {
