@@ -18,10 +18,12 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { deleteObject, ref } from "firebase/storage";
+import { useGlobalContext } from "../contexts/postContext";
 
 const Post = ({ post }) => {
   const [likes, setLikes] = useState([]);
   const [userLiked, setUserLiked] = useState(false);
+  const { dispatch } = useGlobalContext();
 
   // Get post likes
   useEffect(() => {
@@ -94,7 +96,11 @@ const Post = ({ post }) => {
 
         <div className="flex justify-between items-center mt-2 w-full">
           <div className="controller">
-            <AiOutlineComment className="hoverEffect" /> 1
+            <AiOutlineComment
+              className="hoverEffect"
+              onClick={() => dispatch({ type: "OPEN_MODAL", payload: post.id })}
+            />{" "}
+            1
           </div>
           <div className="controller">
             <AiOutlineRetweet className="hoverEffect" />
