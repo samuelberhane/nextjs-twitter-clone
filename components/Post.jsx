@@ -63,7 +63,7 @@ const Post = ({ post, id, page }) => {
   };
 
   return (
-    <div className="flex gap-6 p-4 border-b-2">
+    <div className="flex gap-4 p-4 border-b-2">
       {/* User Profile */}
       <img
         src={post?.data()?.userImg || "/img/user.png"}
@@ -78,7 +78,7 @@ const Post = ({ post, id, page }) => {
             <span className="text-sm font-light">
               - {post?.data()?.userEmail}
             </span>
-            <span className="font-100 text-gray-600">
+            <span className="font-light text-sm text-gray-600">
               {" "}
               - {<Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment>}
             </span>

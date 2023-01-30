@@ -40,7 +40,7 @@ const Modal = () => {
 
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 flex justify-center bg-[rgba(12,23,12,0.5)] z-50 px-1">
-      <div className="mt-20 border-2 h-[250px] bg-white w-full sm:w-[500px] rounded-md shadow relative py-9">
+      <div className="mt-20 border-2 h-[265px] bg-white w-full sm:w-[500px] rounded-md shadow relative py-9">
         <FaTimes
           className="absolute top-2 left-2 text-xl cursor-pointer"
           onClick={() => dispatch({ type: "CLOSE_MODAL" })}
