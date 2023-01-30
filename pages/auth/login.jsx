@@ -91,7 +91,7 @@ const Login = () => {
               <AiOutlineArrowRight className="absolute right-2 top-3" />
             </button>
             <p className="mt-5 font-light">
-              Don't have an account yet?{" "}
+              Don&apos;t have an account yet?{" "}
               <Link href="/auth/signup" className="text-blue-400">
                 Sign up
               </Link>
@@ -108,7 +108,8 @@ const Login = () => {
       <div className="text-[#5c89fb] h-screen hidden lg:inline px-8">
         <div className="h-[180px] py-24 px-16">
           <p className="font-bold text-center text-xl">
-            Join Twitter today and see what's happening in the world right now
+            Join Twitter today and see what&apos;s happening in the world right
+            now
           </p>
         </div>
 

@@ -22,14 +22,14 @@ const Comment = ({ comment, id, postId }) => {
         setLikes(snapshot.docs);
       }
     );
-  }, []);
+  }, [id, postId]);
 
   // find user id in comment likes
   useEffect(() => {
     setUserLiked(
       likes.findIndex((like) => like.id === auth?.currentUser?.uid) !== -1
     );
-  }, [likes, auth?.currentUser?.uid]);
+  }, [likes, auth.currentUser.uid]);
 
   //   handle comment likes
   const handleLike = async () => {

@@ -33,14 +33,14 @@ const Post = ({ post, id, page }) => {
     onSnapshot(collection(db, "posts", id, "comment"), (snapshot) =>
       setComments(snapshot.docs)
     );
-  }, []);
+  }, [id]);
 
   // find user id in post likes
   useEffect(() => {
     setUserLiked(
       likes.findIndex((like) => like.id === auth?.currentUser?.uid) !== -1
     );
-  }, [likes, auth?.currentUser?.uid]);
+  }, [likes, auth.currentUser.uid]);
 
   const handleLike = async () => {
     // remove user id if already liked
