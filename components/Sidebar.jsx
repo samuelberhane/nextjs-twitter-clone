@@ -28,7 +28,7 @@ const Sidebar = () => {
       {/* Mini User Profile */}
       <div className="items-center hidden gap-3 p-1 border-2 lg:flex rounded-2xl hoverChange">
         <Image
-          src={auth?.currentUser?.photoURL || "/img/user.jpg"}
+          src={auth?.currentUser?.photoURL || "/img/user.png"}
           alt="user"
           width="45"
           height="45"

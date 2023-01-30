@@ -83,7 +83,7 @@ const Share = () => {
       {/* User Profile */}
       <div>
         <Image
-          src={auth?.currentUser?.photoURL || "/img/user.jpg"}
+          src={auth?.currentUser?.photoURL || "/img/user.png"}
           alt="user"
           width="50"
           height="50"

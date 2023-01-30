@@ -66,7 +66,7 @@ const Post = ({ post, id, page }) => {
     <div className="flex gap-6 p-4 border-b-2">
       {/* User Profile */}
       <img
-        src={post?.data()?.userImg || "/img/user.jpg"}
+        src={post?.data()?.userImg || "/img/user.png"}
         alt="user"
         className="rounded-full w-10 h-10"
       />

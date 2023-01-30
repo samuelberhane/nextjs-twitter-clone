@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Sidebar, Widgets, Post } from "../../components";
+import { Sidebar, Widgets, Post, Comment } from "../../components";
 import Head from "next/head";
-import { doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { auth, db } from "../../firebase/firebaseConfig";
 import Link from "next/link";
 import { signOut } from "firebase/auth";
@@ -28,11 +34,19 @@ export async function getServerSideProps() {
 const PostDetail = ({ trendingNews, whoToFollow }) => {
   const router = useRouter();
   const [post, setPost] = useState(null);
+  const [comments, setComments] = useState([]);
   const { id } = router.query;
 
   // fetch all comment for the post
   useEffect(() => {
     onSnapshot(doc(db, "posts", id), (snapshot) => setPost(snapshot));
+    onSnapshot(
+      query(
+        collection(db, "posts", id, "comment"),
+        orderBy("timestamp", "desc")
+      ),
+      (snapshot) => setComments(snapshot.docs)
+    );
   }, [id]);
 
   // handle user signout
@@ -41,8 +55,6 @@ const PostDetail = ({ trendingNews, whoToFollow }) => {
       router.push("/auth");
     });
   };
-
-  console.log(post?.data());
 
   return (
     <>
@@ -74,6 +86,17 @@ const PostDetail = ({ trendingNews, whoToFollow }) => {
             </div>
           </div>
           <Post post={post} id={id} page={true} />
+          <div>
+            {comments?.length > 0 &&
+              comments.map((comment, index) => (
+                <Comment
+                  key={index}
+                  comment={comment}
+                  id={comment.id}
+                  postId={id}
+                />
+              ))}
+          </div>
         </div>
 
         {/* Widgets */}

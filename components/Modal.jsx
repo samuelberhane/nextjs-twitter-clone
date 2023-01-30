@@ -1,7 +1,13 @@
 import { useGlobalContext } from "../contexts/postContext";
 import { FaTimes } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { addDoc, collection, doc, onSnapshot } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
 import { BsFillEmojiExpressionlessFill } from "react-icons/bs";
 import { useRouter } from "next/router";
@@ -24,7 +30,8 @@ const Modal = () => {
       username: auth?.currentUser?.displayName,
       userImg: auth?.currentUser?.photoURL,
       userEmail: auth?.currentUser?.email,
-      timestamp: new Date().getTime(),
+      timestamp: serverTimestamp(),
+      postOwner: post?.data()?.creator,
     });
     dispatch({ type: "CLOSE_MODAL" });
     setCommentText("");
@@ -33,7 +40,7 @@ const Modal = () => {
 
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 flex justify-center bg-[rgba(12,23,12,0.5)] z-50 px-1">
-      <div className="mt-20 border-2 h-[290px] bg-white w-full sm:w-[500px] rounded-md shadow relative py-9">
+      <div className="mt-20 border-2 h-[250px] bg-white w-full sm:w-[500px] rounded-md shadow relative py-9">
         <FaTimes
           className="absolute top-2 left-2 text-xl cursor-pointer"
           onClick={() => dispatch({ type: "CLOSE_MODAL" })}
@@ -41,7 +48,7 @@ const Modal = () => {
         <div className="border-t-2 py-4 px-2">
           <div className="flex gap-2">
             <img
-              src={post?.data().userImg || "/img/user.jpg"}
+              src={post?.data().userImg || "/img/user.png"}
               alt="user"
               className="rounded-full w-10 h-10"
             />
@@ -66,7 +73,7 @@ const Modal = () => {
           <div className="flex gap-1 mt-2">
             {/* User Profile */}
             <img
-              src={auth?.currentUser?.photoURL || "/img/user.jpg"}
+              src={auth?.currentUser?.photoURL || "/img/user.png"}
               alt="user"
               className="rounded-full w-10 h-10"
             />
