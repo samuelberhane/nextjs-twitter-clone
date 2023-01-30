@@ -50,7 +50,7 @@ const Share = () => {
       userImg: auth?.currentUser?.photoURL,
       username: auth?.currentUser?.displayName,
       userEmail: auth?.currentUser?.email,
-      timestamp: new Date().getTime(),
+      timestamp: serverTimestamp(),
       uuid,
       text,
     };

@@ -5,8 +5,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 
-const Feeds = () => {
+const Feeds = ({ page }) => {
   const router = useRouter();
   const [posts, setPosts] = useState([]);
 
@@ -34,7 +35,10 @@ const Feeds = () => {
 
       {/* Top bar */}
       <div className="flex items-center justify-between py-2 px-4 border-b-2">
-        <h1 className="font-bold text-2xl">Home</h1>
+        <Link href="/">
+          <h1 className="font-bold text-2xl">Home</h1>
+        </Link>
+
         <div
           onClick={handleSignout}
           className="flex items-center gap-2 cursor-pointer"
@@ -44,22 +48,24 @@ const Feeds = () => {
       </div>
 
       {/* tweet component */}
-      <Share />
+      {page || <Share />}
 
       {/* posts */}
-      <AnimatePresence>
-        {posts?.map((post, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <Post key={index} post={post} />
-          </motion.div>
-        ))}
-      </AnimatePresence>
+      {page || (
+        <AnimatePresence>
+          {posts?.map((post, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <Post key={index} post={post} id={post.id} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      )}
     </div>
   );
 };

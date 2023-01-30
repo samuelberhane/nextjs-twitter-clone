@@ -1,6 +1,3 @@
-import Image from "next/legacy/image";
-import { BsChevronDown } from "react-icons/bs";
-import { formatDistanceToNow } from "date-fns";
 import {
   AiOutlineComment,
   AiOutlineRetweet,
@@ -19,8 +16,9 @@ import {
 import { useEffect, useState } from "react";
 import { deleteObject, ref } from "firebase/storage";
 import { useGlobalContext } from "../contexts/postContext";
+import Moment from "react-moment";
 
-const Post = ({ post }) => {
+const Post = ({ post, id, page }) => {
   const [likes, setLikes] = useState([]);
   const [comments, setComments] = useState([]);
   const [userLiked, setUserLiked] = useState(false);
@@ -28,11 +26,11 @@ const Post = ({ post }) => {
 
   // Get post likes
   useEffect(() => {
-    onSnapshot(collection(db, "posts", post.id, "likes"), (snapshot) =>
+    onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
       setLikes(snapshot.docs)
     );
 
-    onSnapshot(collection(db, "posts", post.id, "comment"), (snapshot) =>
+    onSnapshot(collection(db, "posts", id, "comment"), (snapshot) =>
       setComments(snapshot.docs)
     );
   }, []);
@@ -42,17 +40,15 @@ const Post = ({ post }) => {
     setUserLiked(
       likes.findIndex((like) => like.id === auth?.currentUser?.uid) !== -1
     );
-  }, [likes, auth.currentUser.uid]);
+  }, [likes, auth?.currentUser?.uid]);
 
   const handleLike = async () => {
     // remove user id if already liked
     if (userLiked) {
-      await deleteDoc(
-        doc(db, "posts", post.id, "likes", auth?.currentUser?.uid)
-      );
+      await deleteDoc(doc(db, "posts", id, "likes", auth?.currentUser?.uid));
     } else {
       // add user if to like array
-      await setDoc(doc(db, "posts", post.id, "likes", auth?.currentUser?.uid), {
+      await setDoc(doc(db, "posts", id, "likes", auth?.currentUser?.uid), {
         username: auth?.currentUser?.displayName,
       });
     }
@@ -60,9 +56,9 @@ const Post = ({ post }) => {
 
   // handle delete post
   const handleDelete = async () => {
-    await deleteDoc(doc(db, "posts", post.id));
-    if (post.data().imgUrl) {
-      deleteObject(ref(storage, `posts/${post.data().uuid}/image`));
+    await deleteDoc(doc(db, "posts", id));
+    if (post?.data()?.imgUrl) {
+      deleteObject(ref(storage, `posts/${post?.data()?.uuid}/image`));
     }
   };
 
@@ -70,7 +66,7 @@ const Post = ({ post }) => {
     <div className="flex gap-6 p-4 border-b-2">
       {/* User Profile */}
       <img
-        src={post.data().userImg || "/img/user.jpg"}
+        src={post?.data()?.userImg || "/img/user.jpg"}
         alt="user"
         className="rounded-full w-10 h-10"
       />
@@ -78,25 +74,29 @@ const Post = ({ post }) => {
       <div className="w-full">
         <div className="flex justify-between items-center mb-1">
           <h3 className="font-bold">
-            {post.data().username}{" "}
+            {post?.data()?.username}{" "}
+            <span className="text-sm font-light">
+              - {post?.data()?.userEmail}
+            </span>
             <span className="font-100 text-gray-600">
-              - {formatDistanceToNow(new Date(post.data().timestamp))}
+              {" "}
+              - {<Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment>}
             </span>
           </h3>
-          {auth?.currentUser?.uid === post.data().creator && (
+          {auth?.currentUser?.uid === post?.data()?.creator && !page && (
             <div className="controller" onClick={handleDelete}>
               <RiDeleteBin6Line className="hoverEffect" />
             </div>
           )}
         </div>
         <p className="text-[14px] md:text-[16px]">
-          {post.data().text.length > 120
-            ? post.data().text.slice(0, 120) + "..."
-            : post.data().text}
+          {post?.data()?.text.length > 120
+            ? post?.data()?.text.slice(0, 120) + "..."
+            : post?.data()?.text}
         </p>
-        {post.data().imgUrl && (
+        {post?.data()?.imgUrl && (
           <img
-            src={post.data().imgUrl}
+            src={post?.data()?.imgUrl}
             alt="post"
             className="w-full h-[240px] md:h-[320px] lg:h-[360px] rounded-md mt-2"
           />
@@ -106,7 +106,7 @@ const Post = ({ post }) => {
           <div className="controller">
             <AiOutlineComment
               className="hoverEffect"
-              onClick={() => dispatch({ type: "OPEN_MODAL", payload: post.id })}
+              onClick={() => dispatch({ type: "OPEN_MODAL", payload: id })}
             />
             {comments?.length}
           </div>
