@@ -13,6 +13,7 @@ import { auth, db } from "../../firebase/firebaseConfig";
 import Link from "next/link";
 import { signOut } from "firebase/auth";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
+import { AnimatePresence, motion } from "framer-motion";
 
 export async function getServerSideProps() {
   const trendingNews = await fetch(
@@ -87,15 +88,26 @@ const PostDetail = ({ trendingNews, whoToFollow }) => {
           </div>
           <Post post={post} id={id} page={true} />
           <div>
-            {comments?.length > 0 &&
-              comments.map((comment, index) => (
-                <Comment
-                  key={index}
-                  comment={comment}
-                  id={comment.id}
-                  postId={id}
-                />
-              ))}
+            {comments?.length > 0 && (
+              <AnimatePresence>
+                {comments.map((comment, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <Comment
+                      key={index}
+                      comment={comment}
+                      id={comment.id}
+                      postId={id}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            )}
           </div>
         </div>
 
